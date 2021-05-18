@@ -1,0 +1,96 @@
+
+<html lang="en">
+<head>
+<title>RSS FEED</title>
+</head>
+<style>
+*{
+    font-family: 'Courier New', Courier, monospace;
+  }
+body {
+  margin: 1rem;
+  margin-top: 10rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 2rem;
+  background: transparent;
+  
+}
+article {
+  background: rgb(0,189,255);
+  border-radius: 4px;
+  font: 12px/1.1 system-ui, sans-serif;
+}
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  h2 {
+    padding: 1rem 1rem;
+    margin: 0;
+  }
+  .logo {
+      position: absolute;
+      top: 0px;
+  }
+  .image{
+      width:90px;
+      height: 90px;
+      margin-left: 10px;
+      margin-top: 10px;
+  }
+  .header{
+    position: absolute;
+    margin-left: 10rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+
+  }
+  .HEADERs{
+    border-radius: 5px;
+    width: 100%;
+    position: absolute;
+    top:-0px;
+    height: 15%;
+    background-color: ghostwhite;
+  }
+
+</style>
+<body>
+<div class="HEADERs">
+    <div class="logo">
+        <img src="AC_Logo_Vert.png" alt="" class="image">
+    </div>
+    <div class="header">
+        <h1>Requirement in IPTECH2 Subject</h1>
+    </div>
+</div>
+  
+  <script>
+    const RSS_URL = `https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml`;
+
+    fetch(RSS_URL)
+    .then(response => response.text())
+    .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+    .then(data => {
+        console.log(data);
+        const items = data.querySelectorAll("item");
+        let html = ``;
+        items.forEach(el => {
+        html += `
+            <article>
+            <img src="${el.querySelector("link").innerHTML}/image/large.png" alt="">
+            <h2>
+                <a href="${el.querySelector("link").innerHTML}" target="_blank" rel="noopener">
+                ${el.querySelector("title").innerHTML}
+                </a>
+            </h2>
+            </article>
+        `;
+        });
+        document.body.insertAdjacentHTML("beforeend", html);
+    });
+    </script>
+</body>
+</html>
